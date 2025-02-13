@@ -4,33 +4,42 @@ const crypto = require('crypto');
 
 const Pool = require('pg').Pool;
 const pool = new Pool({
-  user: 'Tom',
+  user: 'tomsimpson',
   host: 'localhost',
   database: 'ecommerce_app',
   password: 'password',
-  port: 5432,
+  port: 5433,
 });
 
-const getItems = (req, res) => {
-  pool.query('SELECT * FROM items ORDER BY id ASC', (error, results) => {
+const getItems = (callback) => {
+  pool.query('SELECT * FROM items ORDER BY name ASC', (error, results) => {
     if (error) {
-      throw error;
+      return callback(error);
     }
-    res.status(200).json(results.rows);
+    callback(null, results.rows);
   })
 };
 
 const getItemById = (req, res) => {
   const id = parseInt(req.params.id);
 
+  // verify that the ID is a number
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Invalid item ID' });
+  }
+
   pool.query('SELECT * FROM items WHERE id = $1', [id], (error, results) => {
     if (error) {
-      throw error;
+      return res.status(500).json({ error: error.message });
+    }
+    if (results.rows.length === 0) {
+      return res.status(404).json({ error: 'Item not found' });
     }
     res.status(200).json(results.rows);
   })
 };
 
+// for use as a developer but not yet implemented in the client
 const createItem = (req, res) => {
   const { name, price, in_stock, stock_count, manufacturer_id } = req.body;
   console.log(req.body);
@@ -43,6 +52,7 @@ const createItem = (req, res) => {
   })
 };
 
+// for use as a developer but not yet implemented in the client
 const updateItem = (req, res) => {
   const id = parseInt(req.params.id);
   const { name, price, in_stock, stock_count, manufacturer_id } = req.body;
@@ -59,6 +69,7 @@ const updateItem = (req, res) => {
   )
 };
 
+// for use as a developer but not yet implemented in the client
 const deleteItem = (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -70,96 +81,20 @@ const deleteItem = (req, res) => {
   })
 };
 
+const createOrder = (req, res) => {
+  const { user_id, user_email, items, total_cost } = req.body;
+  const date_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-const addToCart = (req, res) => {
-  const itemId = parseInt(req.body.itemId);
-  console.log(`itemId: ${itemId}`);
-  const itemName = req.body.itemName;
-  console.log(`itemName: ${itemName}`);
-  const itemPrice = req.body.itemPrice;
-  console.log(`itemPrice: ${itemPrice}`);
-  var userId = 'temp';
-
-  // if (req.user.id) { userId = req.user.id };
-
-  let count = 0;
-
-  for (let i = 0; i < req.session.cart.length; i++) {
-    if(req.session.cart[i].itemId === itemId) {
-      req.session.cart[i].quantity += 1;
-
-      count++;
+  pool.query('INSERT INTO orders (user_id, user_email, items, total_cost, date_time) VALUES ($1, $2, $3, $4, $5) RETURNING *', [user_id, user_email, items, total_cost, date_time], (error, results) => {
+    if (error) {
+      throw error;
     }
-  }
-
-  if (count === 0) {
-    const cart_data = {
-      itemId: itemId,
-      itemName: itemName,
-      itemPrice: parseFloat(itemPrice),
-      quantity: 1
-    };
-
-    req.session.cart.push(cart_data);
-  }
-
-  console.log(req.session.cart);
-
-  res.redirect('/'); 
-}
-
-const removeFromCart = (req, res) => {
-  const itemId = parseInt(req.params.id);
-
-  for (let i = 0; i < req.session.cart.length; i++) {
-    if(req.session.cart[i].itemId === itemId) {
-      req.session.cart[i].quantity--;
-      if(req.session.cart[i].quantity === 0) {
-        req.session.cart.splice(i, 1);
-      }
-    }
-  }
-
-  console.log(req.session.cart);
-
-  res.redirect('/');
-}
-
-const emptyCart = (req, res) => {
-  req.session.cart = [];
-
-  res.redirect('/');
-};
-
-
-const checkout = (req, res) => {
-  const payment = true;
-  let totalItems = 0;
-  let totalCost = 0; 
-
-  for (let i = 0; i < req.session.cart.length; i++) {
-    totalItems += 1;
-    let costToAdd = req.session.cart[i].itemPrice * req.session.cart[i].quantity;
-    totalCost += costToAdd;
-  }
-
-  if (totalItems === 0) {
-    res.status(400).send(`Cart is empty.`);
-  }
-  if (payment === false) {
-    res.status(400).send(`Payment failed.`);
-  }
-  pool.query('INSERT INTO orders (date_time, items, total_cost, user_email) VALUES (CURRENT_TIMESTAMP, $1, $2, $3) RETURNING *', [JSON.stringify(req.session.cart), totalCost, req.body.userEmail], (error, results) => {
-    if(error) { throw error; }
-
-    res.status(200).send(`Order ${results.rows[0].id} placed successfully`)
-  });
-
-  req.session.cart = [];
+    res.status(201).json(results.rows);
+  })
 };
 
 const registerUser = (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   const genPassword = (password) => {
     const salt = crypto.randomBytes(32).toString('hex');
@@ -172,34 +107,28 @@ const registerUser = (req, res) => {
 
   const hashedPassword = genPassword(password);
 
-  pool.query('INSERT INTO users (username, hashed_password, salt, unhashed) VALUES ($1, $2, $3, $4) RETURNING *', [
-    username,
+  pool.query('INSERT INTO users (email, hashed_password, salt, unhashed) VALUES ($1, $2, $3, $4) RETURNING *', [
+    email,
     hashedPassword.hash,
     hashedPassword.salt,
     'password'
   ], (error, results) => {
     if (error) {
-      throw error;
+      return res.status(500).json({ error: 'Database error' });
     }
 
-    var user = {
+    const user = {
       id: results.rows[0].id,
-      username: req.body.username
+      email: req.body.email
     };
-    req.login(user, function(err) {
-      if (err) { return (err); }
-      console.log('Successfully logged in!');
-      res.redirect('/');
-      return ;
-    });
 
-    res.status(201).send(`User added with username: ${username}`);
+    res.status(201).json({ message: 'Signup successful', user });
   })
 };
 
-
+// for use as a developer but not yet implemented in the client
 const getUsers = (req, res) => {
-  pool.query('SELECT username FROM users ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT email FROM users ORDER BY id ASC', (error, results) => {
     if (error) {
       throw error;
     }
@@ -210,7 +139,7 @@ const getUsers = (req, res) => {
 const getUserById = (req, res) => {
   const id = parseInt(req.params.id);
 
-  pool.query('SELECT username FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT email FROM users WHERE id = $1', [id], (error, results) => {
     if (error) {
       throw error;
     }
@@ -218,13 +147,14 @@ const getUserById = (req, res) => {
   })
 };
 
+// for use by user but not yet implemented in the client
 const updateUser = (req, res) => {
   const id = parseInt(req.params.id);
-  const { username, hashed_password, salt, unhashed } = req.body;
+  const { email, hashed_password, salt, unhashed } = req.body;
 
   pool.query(
-    'UPDATE users SET username = $1, hashed_password = $2, salt = $3, unhashed = $4 WHERE id = $5',
-    [username, hashed_password, salt, unhashed, id],
+    'UPDATE users SET email = $1, hashed_password = $2, salt = $3, unhashed = $4 WHERE id = $5',
+    [email, hashed_password, salt, unhashed, id],
     (error, results) => {
       if (error) {
         throw error;
@@ -234,14 +164,18 @@ const updateUser = (req, res) => {
   )
 };
 
-const getOrders = (req, res) => {
-  const { userEmail } = req.body;
-  pool.query('SELECT * FROM orders WHERE user_email = $1', [userEmail], (error, results) => {
-    if (error) { throw(error); }
-    res.status(201).json(results.rows);
-  })
+const getOrders = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const result = await pool.query('SELECT * FROM orders WHERE user_id = $1', [userId]);
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch orders' });
+  }
 };
 
+// for use by user but not yet implemented in the client
 const getOrderById = (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -261,10 +195,7 @@ module.exports = {
   createItem,
   updateItem,
   deleteItem,
-  addToCart,
-  removeFromCart,
-  emptyCart,
-  checkout,
+  createOrder,
   registerUser,
   getUsers,
   getUserById,

@@ -1,0 +1,64 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: white;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  padding: 0 20px;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.logo {
+font-size: 1.5rem;
+font-weight: bold;
+color: #333;
+text-decoration: none;
+}
+
+.btnContainer {
+  position: relative;
+  margin-right: 2rem;
+  display: flex;
+  gap: 10px;
+}
+
+.cartBtn {
+  position: relative;
+  background: none; 
+  color: #5c5c5c;
+  font-size: 1.7rem;
+  border: none;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.cartQuantity {
+  position: absolute;
+  top: 7px;
+  right: -4px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0 6px;
+  font-size: 0.7rem;
+}
+
+.userBtn {
+  background: none;
+  color: #5c5c5c;
+  font-size: 1.7rem;
+  border: none;
+  padding-left: 4px;
+  padding-right: 7px;
+}
+
+.logoutBtn {
+  align-self: center;
+  padding: 0 15px;
+  height: 35px;
+}

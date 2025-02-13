@@ -1,0 +1,36 @@
+.cartList-orderComplete {
+    padding: 0;
+    width: 800px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.orderItem {
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.itemInfo-orderComplete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.itemInfo-orderComplete h3 {
+    margin: 0;
+    align-self: flex-end;
+}
+
+.itemDetails-orderComplete {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

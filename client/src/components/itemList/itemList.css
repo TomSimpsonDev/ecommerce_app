@@ -1,0 +1,20 @@
+.itemList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Media query for medium screens (tablets) */
+@media (min-width: 768px) {
+    .itemList {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Media query for small screens (phones) */
+@media (max-width: 767px) {
+    .itemList {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,82 @@
+.formContainer {
+    height: 88vh;
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.formContainer h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.formContainer-login {
+    width: 100%;
+}
+
+.formContainer-login p {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+    opacity: 0.6;
+}
+
+.successMessage {
+    font-weight: bold;
+}
+
+.formField {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.formLabel {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    align-self: flex-start;
+    margin-left: 2.2rem;
+    opacity: 0.6;
+}
+
+.formInput {
+    width: 80%;
+    height: 3rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    margin: 0 auto 1rem auto;
+    border: 1px solid black;
+    padding: 4px 12px;
+    border-radius: 5px;
+}
+
+.formButton {
+    width: 80%;
+    height: 3rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    margin: 0 auto 1rem auto;
+    padding: 8px 20px;
+    cursor: pointer;
+    width: min-content;
+    opacity: 0.9;
+}
+
+.thirdPartyLogin h5 {
+    margin: 1rem;
+}
+
+.signUpLink {
+    text-decoration: underline;
+}
+
+.signUpLink:hover {
+    color: rgb(101, 101, 101);
+}

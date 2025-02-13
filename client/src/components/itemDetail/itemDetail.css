@@ -1,0 +1,103 @@
+.item-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    margin: 50px 150px 0 150px;
+    gap: 50px;
+}
+
+.leftGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.itemImg-detail {
+    width: 90%;
+    object-fit: cover;
+    position: sticky;
+    top: 20px;
+    margin: 0 auto 15px auto;
+    border-radius: 10px;
+}
+
+.itemControls {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.cartQuantity-detail {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    background: none;
+    color: black;
+    font-size: 1.3rem;
+}
+
+.cartQuantity-detail p {
+    align-self: center;
+
+}
+
+.detailBtnContainer {
+    position: relative;
+    top: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.detailBtn {
+    font-size: 0.9rem;
+    text-decoration: none;
+    padding: 1px 6px;
+    cursor: pointer;
+    width: min-content;
+    opacity: 0.9;
+    border-radius: 5px;
+}
+
+.deactivated {
+    background-color: #4c4a4a;
+    color: #ababab;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.itemText-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.itemDesc-detail {
+    font-size: 1.1rem;
+    width: 100%;
+    padding: 0 auto;
+    gap: 20px;
+}
+
+.itemText-detail h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+}
+
+.itemDesc-detail h5 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 30px 0 0 0;
+}
+
+.itemDesc-detail h6 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 30px 0 0 0;
+}
