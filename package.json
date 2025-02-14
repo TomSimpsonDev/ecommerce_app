@@ -26,5 +26,8 @@
     "pg": "^8.13.1",
     "react": "^19.0.0",
     "stripe": "^17.6.0"
+  },
+  "devDependencies": {
+    "web-vitals": "^4.2.4"
   }
 }
