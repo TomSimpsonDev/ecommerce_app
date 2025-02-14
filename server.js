@@ -10,10 +10,10 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.CLIENT_URL || 'http://localhost:3000',
   credentials: true
 }));
 
@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
-  secret: 'secret-key',
+  secret: process.env.SESSION_SECRET || 'secret-key',
   resave: false,
   saveUninitialized: false
 }));
@@ -29,8 +29,21 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/auth', authRouter);
-app.use('/', indexRouter);
+app.use('/api/auth', authRouter);
+app.use('/api', indexRouter);
+
+// Serve static files from the React app
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running...');
+  });
+}
 
 app.post('/create-payment-intent', async (req, res) => {
   const { paymentMethodId, amount } = req.body;
