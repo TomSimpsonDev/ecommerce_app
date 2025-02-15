@@ -16,6 +16,7 @@
     "dompurify": "^3.2.3",
     "dotenv": "^16.4.7",
     "node-polyfill-webpack-plugin": "^4.1.0",
+    "path-browserify": "^1.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
@@ -49,5 +50,8 @@
   },
   "devDependencies": {
     "web-vitals": "^4.2.4"
+  },
+  "browser": {
+    "path": false
   }
 }
