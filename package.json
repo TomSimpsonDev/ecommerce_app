@@ -33,6 +33,7 @@
     "stripe": "^17.6.0"
   },
   "devDependencies": {
+    "@ljharb/tsconfig": "^0.2.3",
     "web-vitals": "^4.2.4"
   }
 }
