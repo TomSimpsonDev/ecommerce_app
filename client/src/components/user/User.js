@@ -1,6 +1,5 @@
-require ('dotenv').config();
 import React, { useEffect, useState } from 'react';
-// import { API_ENDPOINT } from '../../api';
+import { API_ENDPOINT } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import './user.css';
 
@@ -21,7 +20,7 @@ export default function User() {
     const fetchOrders = async () => {
       try {
         const userId = sessionStorage.getItem('userId');
-        const response = await fetch(`${process.env.API_ENDPOINT}/orders`, {
+        const response = await fetch(`${API_ENDPOINT}/orders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
