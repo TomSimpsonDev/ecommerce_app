@@ -1,7 +1,6 @@
-require('dotenv').config();
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-// import { API_ENDPOINT } from '../../api';
+import { API_ENDPOINT } from '../../api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faTwitter as faXTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -38,7 +37,7 @@ export default function Login(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(`${process.env.API_ENDPOINT}/auth/login`, {
+    const response = await fetch(`${API_ENDPOINT}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -98,8 +97,8 @@ export default function Login(props) {
         </form>
         <div className='thirdPartyLogin'>
           <h5>Or login with:</h5>
-          <a href={`${process.env.API_ENDPOINT}/auth/google`} className='btn btn-danger'><FontAwesomeIcon icon={faGoogle} /></a>
-          <a href={`${process.env.API_ENDPOINT}/auth/twitter`} className='btn btn-info'><FontAwesomeIcon icon={faXTwitter} />
+          <a href={`${API_ENDPOINT}/auth/google`} className='btn btn-danger'><FontAwesomeIcon icon={faGoogle} /></a>
+          <a href={`${API_ENDPOINT}/auth/twitter`} className='btn btn-info'><FontAwesomeIcon icon={faXTwitter} />
           </a>
         </div>
         <div className="loginFailed">

@@ -29,8 +29,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/auth', authRouter);
-app.use('/', indexRouter);
+app.use('/api/auth', authRouter);
+app.use('/api', indexRouter);
 
 // Serve static files from the React app
 if (process.env.NODE_ENV === 'production') {
@@ -55,7 +55,7 @@ app.post('/create-payment-intent', async (req, res) => {
       payment_method: paymentMethodId,
       confirmation_method: 'manual',
       confirm: true,
-      return_url: process.env.API_ENDPOINT || 'http://localhost:8000',
+      return_url: 'http://localhost:3000/checkout',
     });
 
     res.send({ clientSecret: paymentIntent.client_secret });
