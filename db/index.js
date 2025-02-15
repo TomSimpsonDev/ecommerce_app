@@ -1,15 +1,47 @@
 // const express = require('express');
 // const app = express();
-const crypto = require('crypto');
 
+require("dotenv").config();
+
+const http = require("http");
+const { neon } = require("@neondatabase/serverless");
+const crypto = require('crypto');
 const Pool = require('pg').Pool;
+
+const sql = neon(process.env.DATABASE_URL);
+
 const pool = new Pool({
-  user: 'tomsimpson',
-  host: 'localhost',
-  database: 'ecommerce_app',
-  password: 'password',
-  port: 5433,
+  // user: 'tomsimpson',
+  // host: 'localhost',
+  // database: 'ecommerce_app',
+  // password: 'password',
+  // port: 5433,
+
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
+
+const requestHandler = async (req, res) => {
+  try {
+    const result = await sql`SELECT version()`;
+    const { version } = result[0];
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end(version);
+  } catch (error) {
+    console.error('Error executing query', error);
+    res.writeHead(500, { "Content-Type": "text/plain" });
+    res.end("An error occurred");
+  }
+};
+
+http.createServer(requestHandler).listen(3000, () => {
+  console.log("Server running at http://localhost:3000");
+});
+
+
+
 
 const getItems = (callback) => {
   pool.query('SELECT * FROM items ORDER BY name ASC', (error, results) => {
