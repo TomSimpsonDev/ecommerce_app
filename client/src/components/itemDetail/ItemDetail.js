@@ -1,8 +1,9 @@
+require('dotenv').config();
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addItemToCart, removeFromCart } from '../cart/cartActions';
-import { API_ENDPOINT } from '../../api';
+// import { API_ENDPOINT } from '../../api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import DOMPURIFY from 'dompurify';
@@ -43,7 +44,7 @@ const ItemDetail = ({ cart, addItemToCart, removeFromCart }) => {
   useEffect(() => {
     const fetchItem = async () => {
         try {
-            const response = await fetch(`${API_ENDPOINT}/items/${id}`, {
+            const response = await fetch(`${process.env.API_ENDPOINT}/items/${id}`, {
               method: 'GET',
               credentials: 'include',
             });
