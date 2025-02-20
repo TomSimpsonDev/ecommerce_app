@@ -48,6 +48,7 @@ const getItems = (callback) => {
     if (error) {
       return callback(error);
     }
+    console.log(results.rows);
     callback(null, results.rows);
   })
 };
