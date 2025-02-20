@@ -8,6 +8,7 @@ const { neon } = require("@neondatabase/serverless");
 const crypto = require('crypto');
 const Pool = require('pg').Pool;
 
+// Use Neon database URL from environment variables
 const sql = neon(process.env.DATABASE_URL);
 
 const pool = new Pool({
@@ -40,13 +41,12 @@ http.createServer(requestHandler).listen(3000, () => {
   console.log("Server running at http://localhost:3000");
 });
 
-
-
-
 const getItems = (callback) => {
   pool.query('SELECT * FROM items ORDER BY name ASC', (error, results) => {
     if (error) {
-      return callback(error);
+      console.error('Error fetching items:', error);
+      callback([]);
+      return;
     }
     console.log(results.rows);
     callback(null, results.rows);

@@ -19,6 +19,7 @@ export default function ItemList() {
           throw new Error('Failed to fetch items');
         }
         const data = await response.json();
+        console.log('data:', data);
         setItems(data.items);
       } catch (err) {
         setError(err.message);
