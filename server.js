@@ -19,12 +19,15 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: [
         "'self'",
+        "https://js.stripe.com",
         "https://m.stripe.network",
         "'sha256-5DA+a07wxWmEka9IdoWjSPVHb17Cp5284/lJzfbl8KA='",
         "'sha256-/5Guo2nzv5n/w6ukZpOBZOtTJBJPSkJ6mhHpnBgm3Ls='"
       ],
       frameSrc: ["'self'", "https://js.stripe.com"],
-      connectSrc: ["'self'", "https://api.stripe.com"]
+      connectSrc: ["'self'", "https://api.stripe.com"],
+      imgSrc: ["'self'", "data:"],
+      styleSrc: ["'self'", "'unsafe-inline'"]
     }
   }
 }));
@@ -72,7 +75,7 @@ app.post('/create-payment-intent', async (req, res) => {
       payment_method: paymentMethodId,
       confirmation_method: 'manual',
       confirm: true,
-      return_url: 'http://localhost:3000/checkout',
+      return_url: `${process.env.CLIENT_URL}/checkout`,
     });
 
     res.send({ clientSecret: paymentIntent.client_secret });
