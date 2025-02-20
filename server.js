@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const helmet = require('helmet');
 const cors = require('cors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const bodyParser = require('body-parser');
@@ -11,6 +12,22 @@ const authRouter = require('./routes/auth');
 
 const app = express();
 const port = process.env.PORT || 8000;
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "https://m.stripe.network",
+        "'sha256-5DA+a07wxWmEka9IdoWjSPVHb17Cp5284/lJzfbl8KA='",
+        "'sha256-/5Guo2nzv5n/w6ukZpOBZOtTJBJPSkJ6mhHpnBgm3Ls='"
+      ],
+      frameSrc: ["'self'", "https://js.stripe.com"],
+      connectSrc: ["'self'", "https://api.stripe.com"]
+    }
+  }
+}));
 
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
