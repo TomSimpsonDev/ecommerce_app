@@ -27,7 +27,8 @@ app.use(helmet({
       frameSrc: ["'self'", "https://js.stripe.com"],
       connectSrc: ["'self'", "https://api.stripe.com"],
       imgSrc: ["'self'", "data:"],
-      styleSrc: ["'self'", "'unsafe-inline'"]
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"]
     }
   }
 }));
