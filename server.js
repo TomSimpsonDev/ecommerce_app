@@ -50,8 +50,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/auth', authRouter);
-app.use('/api', indexRouter);
+app.use('/auth', authRouter);
+app.use('/', indexRouter);
 
 // Serve static files from the React app
 if (process.env.NODE_ENV === 'production') {
