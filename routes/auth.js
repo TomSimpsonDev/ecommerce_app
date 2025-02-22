@@ -30,7 +30,7 @@ passport.use(new LocalStrategy((email, password, done) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:8000/auth/google/callback"
+  callbackURL: `${process.env.API_ENDPOINT}/auth/google/callback` || "http://localhost:8000/auth/google/callback"
 },
 async (accessToken, refreshToken, profile, done) => {
   try {
@@ -51,7 +51,7 @@ async (accessToken, refreshToken, profile, done) => {
 passport.use(new TwitterStrategy({
   consumerKey: process.env.TWITTER_CONSUMER_KEY,
   consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-  callbackURL: "http://localhost:8000/auth/twitter/callback",
+  callbackURL: `${process.env.API_ENDPOINT}/auth/twitter/callback` || "http://localhost:8000/auth/twitter/callback",
   includeEmail: true // Request email from Twitter
 },
 async (token, tokenSecret, profile, done) => {
@@ -104,7 +104,7 @@ router.get('/google',
 router.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    res.redirect('http://localhost:3000');
+    res.redirect(process.env.API_ENDPOINT || 'http://localhost:3000');
   }
 );
 
@@ -115,7 +115,7 @@ router.get('/twitter',
 router.get('/twitter/callback',
   passport.authenticate('twitter', { failureRedirect: '/login' }),
   (req, res) => {
-    res.redirect('http://localhost:3000');
+    res.redirect(process.env.API_ENDPOINT || 'http://localhost:3000');
   }
 );
 
