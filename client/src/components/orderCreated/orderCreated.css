@@ -34,3 +34,13 @@
     align-items: center;
     gap: 15px;
 }
+
+@media (max-width: 768px) {
+    .cartList-orderComplete {
+        width: 100%;
+    }
+
+    .orderItem {
+        width: 90%;
+    }
+}

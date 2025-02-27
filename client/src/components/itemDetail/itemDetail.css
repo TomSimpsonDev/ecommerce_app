@@ -1,9 +1,8 @@
 .item-detail {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: center;
-    margin: 50px 150px 0 150px;
-    gap: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 50px 20px 0 20px;
 }
 
 .leftGrid {
@@ -14,11 +13,10 @@
 }
 
 .itemImg-detail {
-    width: 90%;
+    width: 60%;
     object-fit: cover;
-    position: sticky;
     top: 20px;
-    margin: 0 auto 15px auto;
+    margin: 40px auto 15px auto;
     border-radius: 10px;
 }
 
@@ -32,6 +30,7 @@
 
 .cartQuantity-detail {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     position: relative;
     background: none;
@@ -41,21 +40,20 @@
 
 .cartQuantity-detail p {
     align-self: center;
-
+    
 }
 
 .detailBtnContainer {
     position: relative;
     top: 3px;
     display: flex;
-    flex-direction: column;
-    gap: 5px;
+    gap: 15px;
 }
 
 .detailBtn {
     font-size: 0.9rem;
     text-decoration: none;
-    padding: 1px 6px;
+    padding: 4px 10px;
     cursor: pointer;
     width: min-content;
     opacity: 0.9;
@@ -73,8 +71,6 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    overflow-y: auto;
-    max-height: 80vh;
 }
 
 .itemDesc-detail {
@@ -82,6 +78,7 @@
     width: 100%;
     padding: 0 auto;
     gap: 20px;
+    margin-bottom: 40px;
 }
 
 .itemText-detail h1 {
@@ -100,4 +97,47 @@
     font-size: 1.2rem;
     font-weight: 600;
     margin: 30px 0 0 0;
+}
+
+@media (min-width: 768px) {
+    .item-detail {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        justify-content: center;
+        margin: 50px 150px 0 150px;
+        gap: 50px;
+    }
+
+    .itemImg-detail {
+        width: 90%;
+        object-fit: cover;
+        position: sticky;
+        top: 20px;
+        margin: 0 auto 15px auto;
+        border-radius: 10px;
+    }
+
+    .itemText-detail {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow-y: auto;
+        max-height: 80vh;
+    }
+
+    .detailBtnContainer {
+        position: relative;
+        top: 3px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .cartQuantity-detail {
+        flex-direction: row;
+    }
+
+    .detailBtn {
+        padding: 1px 6px;
+    }
 }

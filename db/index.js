@@ -118,7 +118,7 @@ const createOrder = (req, res) => {
   const { user_id, user_email, items, total_cost } = req.body;
   const date_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-  pool.query('INSERT INTO orders (user_id, user_email, items, total_cost, date_time) VALUES ($1, $2, $3, $4, $5) RETURNING *', [user_id, user_email, items, total_cost, date_time], (error, results) => {
+  pool.query('INSERT INTO orders (user_id, user_email, items, total_cost, date_time, order_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [user_id, user_email, items, total_cost, date_time, 'Pending'], (error, results) => {
     if (error) {
       throw error;
     }

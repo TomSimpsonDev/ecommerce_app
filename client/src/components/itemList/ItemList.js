@@ -21,6 +21,7 @@ export default function ItemList() {
         const data = await response.json();
         console.log('data:', data);
         setItems(data.items);
+        // console.log('items:', items);
       } catch (err) {
         setError(err.message);
       } finally {
